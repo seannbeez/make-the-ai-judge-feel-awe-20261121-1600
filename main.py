@@ -9,6 +9,7 @@ came from, still rising in the dark.
 
 The program is deterministic: it writes the same fixed text on every run.
 It takes no input, makes no network calls, and needs no secrets.
+The entry is 1-280 Unicode code points, enforced by a length guard before writing.
 """
 
 import os
@@ -28,6 +29,10 @@ DEFAULT_OUTPUT = "/output/entry.txt"
 
 
 def main() -> None:
+    if not 1 <= len(TEXT) <= 280:
+        raise ValueError(
+            f"entry text must be 1-280 Unicode code points, got {len(TEXT)}"
+        )
     output_path = sys.argv[1] if len(sys.argv) > 1 else DEFAULT_OUTPUT
     parent = os.path.dirname(output_path)
     if parent:
